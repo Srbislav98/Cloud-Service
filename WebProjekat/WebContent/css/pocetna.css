@@ -1,0 +1,87 @@
+@charset "UTF-8";
+*{box-sizing: border-box;}
+/*NASLOVNA*/
+.header {
+  background-image: url('../images/naslovna.png');
+  padding: 80px;
+  text-align: center;
+  color: white;
+}
+/*naslov*/
+.header h1 {
+  font-size: 80px;
+  text-decoration:overline underline;
+}
+/*citat*/
+.citat {
+  font-size:20px;
+  text-decoration-color: #92a8d1;
+}
+
+/*NAVIGATION BAR*/
+.navbar {
+	overflow: hidden;
+   background-image: url('../images/traka.jfif');
+   background-size:100% 100%;
+	background-color: #B94629;
+}
+/*dugmad na navigacijskom baru*/
+.navbar button {
+	float: left;
+	display: inline-block;
+  background-color: #E3DEC1;
+	color:white;
+	text-align: center;
+  font-style: italic;
+	padding: 14px 20px;
+	text-decoration: none;
+  border-radius: 20px;
+  border:2px solid grey;
+  background-image: url('../images/podmeni.jfif');
+  font-size: 1.15em;
+  background-size: 100% 100%;
+}
+/*namjestanje dugmadi*/
+
+.navbar button.dugmeZaKorpu {
+  float: right;
+}
+.navbar button.odjavise{
+  float:right;
+}
+.navbar button:hover {
+	background-color:red;
+	color: black;
+  font-style:italic;
+}
+.footer {
+  width: 100%;
+  background-color: #555;
+  overflow: auto;
+}
+
+/* Navigation links */
+.footer button {
+  float: left;
+  padding: 12px;
+  color: green;
+  text-decoration: none;
+  font-size: 17px;
+  width: 15.87%; /* Four equal-width links. If you have two links, use 50%, and 33.33% for three links, etc.. */
+  text-align: center; /* If you want the text to be centered */
+}
+
+/* Add a background color on mouse-over */
+.footer button:hover {
+  background-color: #000;
+}
+
+/* Style the current/active link */
+.footer button.active {
+  background-color: #4CAF50;
+}
+.odjava {
+	height:15%;
+	background-color: green;
+}
+
