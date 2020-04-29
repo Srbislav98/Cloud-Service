@@ -1,8 +1,8 @@
 email;lozinka;ime;prezime;organizacija;uloga;korisnickoIme
 admin@gmail.com;admin;admin;admin; ;Super admin;korisnik0
-srbislav@gmail.com;kengur1;Srbislav;Vucenovic;Organizacija 1;Admin;korisnik1
-david@gmail.com;kengur1;David;Vucenovic;Organizacija 2;Admin;korisnik3
-minja@gmail.com;kengur1;Minja;Pericic;Organizacija 1;Korisnik;korisnik4
-igor@gmail.com;kengur1;Igor;Markovic;Organizacija 1;Korisnik;korisnik5
-srdjan@gmail.com;kengur1;Srdjan;Maric;Organizacija 2;Korisnik;korisnik6
-branislav@gmail.com;kengur1;Branislav;Dobrokes;Organizacija 2;Korisnik;korisnik7
+srbislav@gmail.com;kengur1;Srbislav;Vucenovic;Java;Admin;korisnik1
+david@gmail.com;kengur1;David;Vucenovic;Python;Admin;korisnik2
+minja@gmail.com;kengur1;Minja;Pericic;C;Admin;korisnik3
+igor@gmail.com;kengur1;Igor;Markovic;Java;Korisnik;korisnik4
+srdjan@gmail.com;kengur1;Srdjan;Maric;Java;Korisnik;korisnik5
+branislav@gmail.com;kengur1;Branislav;Dobrokes;Python;Korisnik;korisnik6
