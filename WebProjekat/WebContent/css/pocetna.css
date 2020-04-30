@@ -1,87 +1,131 @@
 @charset "UTF-8";
-*{box-sizing: border-box;}
+*{
+	margin:0;
+	padding:0;
+}
+body{
+	background:#0098FB;
+}
 /*NASLOVNA*/
 .header {
-  background-image: url('../images/naslovna.png');
-  padding: 80px;
+  padding: 20px;
   text-align: center;
-  color: white;
+  color: black;
+  background:#0098FB;
 }
 /*naslov*/
 .header h1 {
-  font-size: 80px;
+  font-size: 50px;
   text-decoration:overline underline;
 }
 /*citat*/
 .citat {
   font-size:20px;
   text-decoration-color: #92a8d1;
+  font-family:Arial;
 }
 
 /*NAVIGATION BAR*/
-.navbar {
-	overflow: hidden;
-   background-image: url('../images/traka.jfif');
-   background-size:100% 100%;
-	background-color: #B94629;
+
+.navigacija {
+	padding-top:10px;
+	display:block;
+	width:100%;
+	text-align:center;
 }
-/*dugmad na navigacijskom baru*/
-.navbar button {
-	float: left;
-	display: inline-block;
-  background-color: #E3DEC1;
+
+
+.navigacija form{
+	display:inline-block;
+	background:#E0E0E0;
+}
+
+.navigacija form input{
+	background:#E0E0E0;
+	padding:10px;
+	border-radius:5px;
+	font-family:Arial;
+	font-weight:bold;
+	text-transform:uppercase;
+}
+
+.tablediv{
+	padding-top:50px;
+}
+.table{
+	clear:both;
+	margin:0 auto;
+	border-radius:10px;
+	background:#f1f1f1;
+}
+td,th{
+	margin:0;
+	border:1px solid #DADADD;
+	border-collapse:collapse;
+	font-family:"Times New Roman";
+	padding:5px;
+}
+
+
+
+tr:nth-child(even){
+	color:#898A95;
+	background-color:#EBEBEB;
+}
+
+tr:nth-child(odd){
+	color:#898A95;
+	background-color:#fff;
+}
+
+
+th{
+	background:#1B1F24;
+	color:#f1f1f1;
+	font-weight:normal;
+	border:none;
+	border-bottom:2px solid #9FA9B3;
+	border-radius:5px;
+}
+
+.izmeni{
 	color:white;
-	text-align: center;
-  font-style: italic;
-	padding: 14px 20px;
-	text-decoration: none;
-  border-radius: 20px;
-  border:2px solid grey;
-  background-image: url('../images/podmeni.jfif');
-  font-size: 1.15em;
-  background-size: 100% 100%;
+	height:30px;
+	width:50%;
+	border:1px solid #e0e0e0;
+	border-radius:3px;
+	background:#4287f5;
 }
-/*namjestanje dugmadi*/
-
-.navbar button.dugmeZaKorpu {
-  float: right;
-}
-.navbar button.odjavise{
-  float:right;
-}
-.navbar button:hover {
-	background-color:red;
-	color: black;
-  font-style:italic;
-}
-.footer {
-  width: 100%;
-  background-color: #555;
-  overflow: auto;
+#modaldark{
+	display:none;
+	position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0,0,0,0.8);
+        z-index: 99;
+        opacity:0;
+        -webkit-transition: opacity 400ms ease-in;
+        -moz-transition: opacity 400ms ease-in;
+        transition: opacity 400ms ease-in;
 }
 
-/* Navigation links */
-.footer button {
-  float: left;
-  padding: 12px;
-  color: green;
-  text-decoration: none;
-  font-size: 17px;
-  width: 15.87%; /* Four equal-width links. If you have two links, use 50%, and 33.33% for three links, etc.. */
-  text-align: center; /* If you want the text to be centered */
+.form-popup {
+  background-color:#7ac3ff;
+  display: none;
+  position: absolute;
+  top: 30%;
+  left:40%;
+  width:20%;
+  z-index: 100;
+  border:2px solid #ccc;
+  border-radius:3px;
+  padding:10px 5px;
 }
 
-/* Add a background color on mouse-over */
-.footer button:hover {
-  background-color: #000;
+.leftbutton{
+	float:left;
+	background-color:#28A745;
+	color:white;
 }
-
-/* Style the current/active link */
-.footer button.active {
-  background-color: #4CAF50;
-}
-.odjava {
-	height:15%;
-	background-color: green;
-}
-

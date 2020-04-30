@@ -15,10 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import beans.Disk;
 import beans.Diskovi;
+import beans.KategorijaVM;
 import beans.KategorijeVM;
 import beans.Korisnici;
 import beans.Korisnik;
+import beans.Organizacija;
 import beans.Organizacije;
 import beans.VM;
 import beans.VMe;
@@ -32,10 +35,10 @@ public class Login extends HttpServlet {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void init(javax.servlet.ServletConfig cfg) {
-		Korisnici korisnici;
-		Diskovi diskovi;
-		KategorijeVM kategorijeVM;
-		Organizacije organizacije;
+		Collection<Korisnik> korisnici= new ArrayList<Korisnik>();
+		Collection<Disk> diskovi= new ArrayList<Disk>();
+		Collection<KategorijaVM> kategorijeVM= new ArrayList<KategorijaVM>();
+		Collection<Organizacija> organizacije= new ArrayList<Organizacija>();
 		Collection<VM> vme = new ArrayList<VM>();
 		try {
 			super.init(cfg);
@@ -43,10 +46,10 @@ public class Login extends HttpServlet {
 			e.printStackTrace();
 		}
 		javax.servlet.ServletContext ctx=getServletContext();
-		korisnici = new Korisnici((((javax.servlet.ServletContext) ctx).getRealPath("")));
-		diskovi = new Diskovi((((javax.servlet.ServletContext) ctx).getRealPath("")));
-		kategorijeVM = new KategorijeVM((((javax.servlet.ServletContext) ctx).getRealPath("")));
-		organizacije = new Organizacije((((javax.servlet.ServletContext) ctx).getRealPath("")));
+		korisnici = new Korisnici((((javax.servlet.ServletContext) ctx).getRealPath(""))).values();
+		diskovi = new Diskovi((((javax.servlet.ServletContext) ctx).getRealPath(""))).values();
+		kategorijeVM = new KategorijeVM((((javax.servlet.ServletContext) ctx).getRealPath(""))).values();
+		organizacije = new Organizacije((((javax.servlet.ServletContext) ctx).getRealPath(""))).values();
 		vme = new VMe((((javax.servlet.ServletContext) ctx).getRealPath(""))).values();
 		((javax.servlet.ServletContext) ctx).setAttribute("korisnici", korisnici);
 		((javax.servlet.ServletContext) ctx).setAttribute("diskovi", diskovi);
@@ -72,8 +75,14 @@ public class Login extends HttpServlet {
 		}
 		//System.out.println(vm.getGpu());
 		if(uname!=null && passwd!=null) {
-			Korisnici korisnici = (Korisnici) getServletContext().getAttribute("korisnici");
-				Korisnik user=korisnici.getKorisnik(uname);
+			Collection<Korisnik> korisnicii = (Collection<Korisnik>) getServletContext().getAttribute("korisnici");
+			ArrayList<Korisnik> korisnici=new ArrayList<Korisnik>(korisnicii);
+			Korisnik user=null;
+			for (Korisnik korisnik :korisnici) {
+				if(korisnik.getKorisnickoIme().equals(uname)) {
+					user=korisnik;
+					}
+			}
 				if(user!=null &&(user.getLozinka()).equals(passwd)) {
 					user.setPrijavljen("da");
 					session.setAttribute("user",user);

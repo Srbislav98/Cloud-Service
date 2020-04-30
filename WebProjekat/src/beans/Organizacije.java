@@ -62,8 +62,8 @@ public class Organizacije {
 					}
 				}
 				organizacije.put(ime, new Organizacija(ime,opis,logo,korisnici,resursi));
-				korisnici.clear();
-				resursi.clear();
+				korisnici=new ArrayList<String>();
+				resursi=new ArrayList<String>();
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();

@@ -6,7 +6,7 @@
 <head>
 <link rel="stylesheet" type="text/css" href="/WebProjekat/css/pocetna.css">
 <meta charset="ISO-8859-1">
-<title>Pocetna</title>
+<title>Diskovi</title>
 </head>
 <%
 	response.setHeader("cache-Control","no-cache,no-store,must-revalidate"); 
@@ -21,89 +21,59 @@
 
   <div class="header">
     <h1>WEB 1920</h1>
-    <p class="citat">Dobro dosli na nas web sajt!</p>
+    <p class="citat">Dobro dosli na nas web sajt.</p>
   </div>
   <div class="navigacija">
   	<c:if test= "${user.uloga != 'Korisnik'}">
     <form action="http://localhost:8080/WebProjekat/jsp/organizacija.jsp" class="organizacija" >
- 		<input type="submit" value="Organizacija" >
+ 		<input type="submit" value="Organizacija">
  	</form>
     <form action="http://localhost:8080/WebProjekat/jsp/korisnici.jsp" class="korisnici" >
- 		<input type="submit" value="Korisnici" >
+ 		<input type="submit" value="Korisnici">
  	</form>
  	</c:if>
     <form action="http://localhost:8080/WebProjekat/jsp/profil.jsp" class="profil" >
  		<input type="submit" value="Profil" >
  	</form>
     <form action="http://localhost:8080/WebProjekat/jsp/pocetna.jsp" class="vm" method="post">
- 		<input type="submit" value="VM" >
+ 		<input type="submit" value="VM">
  	</form>
     <form action="http://localhost:8080/WebProjekat/jsp/disk.jsp" class="disk" >
- 		<input type="submit" value="Disk" >
+ 		<input type="submit" value="Disk">
  	</form>
  	<c:if test= "${user.uloga == 'Super admin'}">
     <form action="http://localhost:8080/WebProjekat/jsp/kategorija.jsp" class="kategorija" >
- 		<input type="submit" value="Kategorija" >
+ 		<input type="submit" value="Kategorija">
  	</form>
  	</c:if>
     <form action="http://localhost:8080/WebProjekat/Logout" class="odjava" >
- 		<input type="submit" value="Odjavi se">
+ 		<input type="submit" value="Logout">
  	</form>
   </div>
   <div class="tablediv">
   	<table class="table">
 		<tr>
 		   <th>Ime</th>
-		   <th>Organizacija</th>
-		   <th>Br jezgara</th>
-		   <th>Ram</th>
-		   <th>Gpu</th>
+		   <th>Kapacitet</th>
+		   <th>VM</th>
 		   <th colspan="2">Uredjivanje</th>
-		  <!--<th>Diskovi</th>
-		   <th colspan="2">Aktivnosti</th>-->
 		</tr>
-		<c:forEach var="v" items="${applicationScope.vme}">
+		<c:forEach var="v" items="${applicationScope.diskovi}">
 		<c:if test= "${user.uloga == 'Super admin' || user.organizacija==v.organizacija }">
 			<tr class="filterDiv">
 				<td class="myclass"><c:out value="${v.ime}" /></td>
-				<td class="myclass"><c:out value="${v.organizacija}" /></td>
-				<td class="myclass"><c:out value="${v.jezgara}" /></td>
-				<td class="myclass"><c:out value="${v.ram}" /></td>
-				<td class="myclass"><c:out value="${v.gpu}" /></td>
-				<!--<c:forEach var="diskic" items="${v.diskovi}">
-				<td class="myclass"><c:out value="${diskic}" /></td>
-				</c:forEach>
-				<td>
-					<ul>
-						<c:forEach var="diskic" items="${v.diskovi}">
-							<li class="myclass"><c:out value="${diskic}" /></li>
-						</c:forEach>
-					</ul>
-				</td>
-				<td>
-					<ul>
-						<c:forEach var="vreme" items="${v.aktivnosti}">
-							<li class="myclass"><c:out value="${vreme.pocetak}" /></li>
-						</c:forEach>
-					</ul>
-				</td>
-				<td>
-					<ul>
-						<c:forEach var="vreme" items="${v.aktivnosti}">
-							<li class="myclass"><c:out value="${vreme.kraj}" /></li>
-						</c:forEach>
-					</ul>
-				</td>-->
+				<td class="myclass"><c:out value="${v.kapacitet}" /></td>
+				<td class="myclass"><c:out value="${v.vm}" /></td>
 				<td><input class="btn btn-warning btn-lg izmeni" style="width:105%;" value='Izmena/Pregled' type='button'  onclick="otvoriIzmenu()"/></td>
 				<c:if test= "${user.uloga == 'Super admin' || (user.organizacija==v.organizacija && user.uloga=='Admin') }">
-				<td><input class="btn btn-warning btn-lg izmeni" style="width:115%;" value='Obrisi' type='button' onclick="obrisi()"/></td>
+				<td><input class="btn btn-danger btn-lg izmeni" style="width:110%;" value='Obrisi' type='button' onclick="obrisi()"/></td>
 				</c:if>
 			</tr>
 		</c:if>
 		</c:forEach>
 		<c:if test= "${user.uloga == 'Super admin' || user.uloga=='Admin'}">
 		<tr>
-			<td colspan="7" style="text-align:center"><input class="btn btn-warning btn-lg izmeni" type='button' value='Dodaj novu virtuelnu masinu'  onclick="otvoriDodavanje()"/></td>
+			<td colspan="5" style="text-align:center"><input class="btn btn-warning btn-lg izmeni" type='button' value='Dodaj disk'  onclick="otvoriDodavanje()"/></td>
 		</tr>	
 		</c:if>
    </table>
