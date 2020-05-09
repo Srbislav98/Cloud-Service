@@ -3,6 +3,7 @@ package beans;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,8 +13,11 @@ import java.util.StringTokenizer;
 public class VMe {
 		private HashMap<String, VM> vme = new HashMap<String, VM>();
 	
-	public VMe() {
+	public VMe(int a) {
 		this("C:\\Users\\Srbislav\\Desktop\\projekatweb\\Web-Projekat\\WebProjekat\\WebContent\\data");
+	}
+	public VMe() {
+		
 	}
 	
 	public VMe(String path) {
@@ -121,4 +125,52 @@ public class VMe {
 	public VM getKorisnik(String id) {
 		return vme.get(id);
 	}
+
+	public void fajlUpis(String path, ArrayList<VM> vme2) {
+		PrintWriter out = null;
+		try {
+			System.out.println("ovo je "+path);
+			File file = new File(path + "/data/vm.csv");
+			System.out.println(file.getCanonicalPath());
+			out = new PrintWriter(new PrintWriter(file));
+			String resursi="",aktivnosti="";
+			for (VM k : vme2) {
+				resursi="";
+				aktivnosti="";
+				ArrayList<String> res=k.getDiskovi();
+				if(!res.isEmpty()) {
+					for(String i :res) {
+						resursi+=i;
+						resursi+="#";
+					}
+					resursi=resursi.substring(0, resursi.length()-1);
+				}
+				ArrayList<Aktivnost> akt=k.getAktivnosti();
+				if(!akt.isEmpty()) {
+					for(Aktivnost i :akt) {
+						aktivnosti=i.getPocetak().toString();
+						if(i.getKraj()!=null) {
+							aktivnosti+="|";
+							aktivnosti+=i.getKraj().toString();
+						}
+						aktivnosti+="#";
+					}
+					aktivnosti=aktivnosti.substring(0, aktivnosti.length()-1);
+				}
+				String linija=k.getIme()+";"+k.getOrganizacija()+";"+k.getKategorija()+";"+k.getJezgara()+";"+k.getRam()+";"+k.getGpu()+";"+resursi+";"+aktivnosti;
+				out.println(linija);
+				System.out.println(linija);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			if ( out != null ) {
+				try {
+					out.close();
+				}
+				catch (Exception e) { }
+			}
+		}
+	}		
 }

@@ -109,22 +109,28 @@
    </table>
    <div id="modaldark">
    <div class="form-popup" id="myForm1">
-    <h4>Dodavanje organizacije</h4>
+    <form action="#" method="get">
+    <legend>Dodavanje virtuelne masine</legend>
     <br>
-    <input type="text" class="fotrol" placeholder="Ime">
-    <input type="text" class="fotrol" placeholder="Opis">
-    <input type="text" class="fotrol" placeholder="URL logo">
-    <input type="file" value = "onUpload" >
-    <button type="button" class="btn maal leftbutton" onclick="dodaj()">Potvrdi</button>
-    <button type="button" class="btn zaal rightbutton" onclick="otkaziIzmenu()">Otkazi</button>
+    <label>Ime:<input name="" type="text" class="fotrol" placeholder="Unesite ime"></label>
+    <label>Organizacija:<input name="" type="text" class="fotrol" placeholder="Unesite organizaciju"></label>
+    <label>Broj jezgara:<input name="" type="number" class="fotrol" placeholder="Unesite broj jezgara"></label>
+    <label>Ram:<input name="" type="number" class="fotrol" placeholder="Unesite ram"></label>
+    <label>Gpu:<input name="" type="number" class="fotrol" placeholder="Unesite gpu"></label>
+    <br><br><br>
+    <button type="submit" class="btn maal leftbutton">Potvrdi</button>
+    <button type="button" class="btn zaal rightbutton" onclick="otkaziDodavanje()">Otkazi</button>
+   </form>
    </div>
    <div class="form-popup" id="myForm2">
-    <h4>Izmena organizacije</h4>
+    <legend>Izmena i pregled virtuelne masine</legend>
     <br>
-    <input type="text" class="fotrol" placeholder="Ime">
-    <input type="text" class="fotrol" placeholder="Opis">
-    <input type="text" class="fotrol" placeholder="URL logo">
-    <input type="file" value = "onUpload" >
+    <label>Ime:<input name="" type="text" class="fotrol" placeholder="Unesite ime"></label>
+    <label>Organizacija:<input name="" type="text" class="fotrol" placeholder="Unesite organizaciju"></label>
+    <label>Broj jezgara:<input name="" type="number" class="fotrol" placeholder="Unesite broj jezgara"></label>
+    <label>Ram:<input name="" type="number" class="fotrol" placeholder="Unesite ram"></label>
+    <label>Gpu:<input name="" type="number" class="fotrol" placeholder="Unesite gpu"></label>
+    <br><br><br>
     <button type="button" class="btn maal leftbutton" onclick="izmeni()">Potvrdi</button>
     <button type="button" class="btn zaal rightbutton" onclick="otkaziIzmenu()">Otkazi</button>
    </div>

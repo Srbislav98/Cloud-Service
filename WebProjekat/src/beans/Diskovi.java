@@ -3,6 +3,8 @@ package beans;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -10,8 +12,11 @@ import java.util.StringTokenizer;
 public class Diskovi {
 	private HashMap<String, Disk> diskovi = new HashMap<String, Disk>();
 	
-	public Diskovi() {
+	public Diskovi(int a) {
 		this("C:\\Users\\Srbislav\\Desktop\\projekatweb\\Web-Projekat\\WebProjekat\\WebContent\\data");
+	}
+	public Diskovi() {
+		
 	}
 
 	public Diskovi(String path) {
@@ -71,5 +76,31 @@ public class Diskovi {
 	/** Vraca proizvod na osnovu njegovog id-a. */
 	public Disk getKorisnik(String id) {
 		return diskovi.get(id);
+	}
+	
+	public void fajlUpis(String path, ArrayList<Disk> disks) {
+		PrintWriter out = null;
+		try {
+			System.out.println("ovo je "+path);
+			File file = new File(path + "/data/disk.csv");
+			System.out.println(file.getCanonicalPath());
+			out = new PrintWriter(new PrintWriter(file));
+			String resursi="",aktivnosti="";
+			for (Disk k : disks) {
+				String linija=k.getIme()+";"+k.getOrganizacija()+";"+k.getTip()+";"+k.getKapacitet()+";"+k.getVm();
+				out.println(linija);
+				System.out.println(linija);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			if ( out != null ) {
+				try {
+					out.close();
+				}
+				catch (Exception e) { }
+			}
+		}
 	}
 }

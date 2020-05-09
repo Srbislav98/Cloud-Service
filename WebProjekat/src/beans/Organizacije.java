@@ -3,6 +3,7 @@ package beans;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,8 +12,11 @@ import java.util.StringTokenizer;
 public class Organizacije {
 		private HashMap<String, Organizacija> organizacije = new HashMap<String, Organizacija>();
 	
-	public Organizacije() {
+	public Organizacije(int a) {
 		this("C:\\Users\\Srbislav\\Desktop\\projekatweb\\Web-Projekat\\WebProjekat\\WebContent\\data");
+	}
+	public Organizacije() {
+		
 	}
 	
 	public Organizacije(String path) {
@@ -83,5 +87,52 @@ public class Organizacije {
 	/** Vraca proizvod na osnovu njegovog id-a. */
 	public Organizacija getKorisnik(String id) {
 		return organizacije.get(id);
+	}
+	public void fajlUpis(String path, ArrayList<Organizacija> organs) {
+		PrintWriter out = null;
+		try {
+			System.out.println("ovo je "+path);
+			File file = new File(path + "/data/organizacija.csv");
+			System.out.println(file.getCanonicalPath());
+			out = new PrintWriter(new PrintWriter(file));
+			String resursi="",korisnici="";
+			for (Organizacija k : organs) {
+				resursi="";
+				korisnici="";
+				ArrayList<String> kor=k.getKorisnici();
+				if(kor!=null) {
+					for(String i :kor) {
+						korisnici+=i;
+						korisnici+="#";
+					}
+					if(korisnici.length()!=0) {
+						korisnici=korisnici.substring(0, korisnici.length()-1);
+					}
+				}
+				ArrayList<String> res=k.getResursi();
+				if(res!=null) {
+					for(String i :res) {
+						resursi+=i;
+						resursi+="#";
+					}
+					if(resursi.length()!=0) {
+						resursi=resursi.substring(0, resursi.length()-1);
+					}
+				}
+				String linija=k.getIme()+";"+k.getOpis()+";"+k.getLogo()+";"+korisnici+";"+resursi;
+				out.println(linija);
+				System.out.println(linija);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			if ( out != null ) {
+				try {
+					out.close();
+				}
+				catch (Exception e) { }
+			}
+		}
 	}
 }

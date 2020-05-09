@@ -21,6 +21,13 @@ public class Organizacija {
 	public String getIme() {
 		return ime;
 	}
+	public Organizacija(String ime, String opis, String logo) {
+		this.ime = ime;
+		this.opis = opis;
+		this.logo = logo;
+		this.korisnici = null;
+		this.resursi = null;
+	}
 	public void setIme(String ime) {
 		this.ime = ime;
 	}

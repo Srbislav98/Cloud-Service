@@ -79,7 +79,7 @@ public class Login extends HttpServlet {
 			ArrayList<Korisnik> korisnici=new ArrayList<Korisnik>(korisnicii);
 			Korisnik user=null;
 			for (Korisnik korisnik :korisnici) {
-				if(korisnik.getKorisnickoIme().equals(uname)) {
+				if(korisnik.getEmail().equals(uname)) {
 					user=korisnik;
 					}
 			}

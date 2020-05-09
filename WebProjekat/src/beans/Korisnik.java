@@ -10,11 +10,9 @@ public class Korisnik {
 	private String prezime;
 	private String organizacija;
 	private String uloga;
-	private String korisnickoIme;
 	private String prijavljen;
 
-	public Korisnik(String email, String lozinka, String ime, String prezime, String organizacija, String uloga,
-			String korisnickoIme) {
+	public Korisnik(String email, String lozinka, String ime, String prezime, String organizacija, String uloga) {
 		super();
 		this.email = email;
 		this.lozinka = lozinka;
@@ -22,7 +20,6 @@ public class Korisnik {
 		this.prezime = prezime;
 		this.organizacija = organizacija;
 		this.uloga = uloga;
-		this.korisnickoIme = korisnickoIme;
 		this.prijavljen="ne";
 	}
 
@@ -87,13 +84,6 @@ public class Korisnik {
 		this.uloga = uloga;
 	}
 
-	public String getKorisnickoIme() {
-		return korisnickoIme;
-	}
-
-	public void setKorisnickoIme(String korisnickoIme) {
-		this.korisnickoIme = korisnickoIme;
-	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -106,7 +96,6 @@ public class Korisnik {
 		this.prezime = "";
 		this.organizacija = "";
 		this.uloga = "";
-		this.korisnickoIme = "";
 		this.prijavljen="ne";
 	}
 
