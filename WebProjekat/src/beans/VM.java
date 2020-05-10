@@ -25,6 +25,9 @@ public class VM {
 		this.diskovi = diskovi;
 		this.aktivnosti = aktivnosti;
 	}
+	public VM() {
+		// TODO Auto-generated constructor stub
+	}
 	public String getIme() {
 		return ime;
 	}

@@ -146,16 +146,20 @@ public class VMe {
 					resursi=resursi.substring(0, resursi.length()-1);
 				}
 				ArrayList<Aktivnost> akt=k.getAktivnosti();
-				if(!akt.isEmpty()) {
-					for(Aktivnost i :akt) {
-						aktivnosti=i.getPocetak().toString();
-						if(i.getKraj()!=null) {
-							aktivnosti+="|";
-							aktivnosti+=i.getKraj().toString();
+				if(akt!=null) {
+					if(!akt.isEmpty()) {
+						for(Aktivnost i :akt) {
+							aktivnosti=i.getPocetak().toString();
+							if(i.getKraj()!=null) {
+								aktivnosti+="|";
+								aktivnosti+=i.getKraj().toString();
+							}
+							aktivnosti+="#";
 						}
-						aktivnosti+="#";
+						aktivnosti=aktivnosti.substring(0, aktivnosti.length()-1);
 					}
-					aktivnosti=aktivnosti.substring(0, aktivnosti.length()-1);
+				}else {
+					aktivnosti="";
 				}
 				String linija=k.getIme()+";"+k.getOrganizacija()+";"+k.getKategorija()+";"+k.getJezgara()+";"+k.getRam()+";"+k.getGpu()+";"+resursi+";"+aktivnosti;
 				out.println(linija);

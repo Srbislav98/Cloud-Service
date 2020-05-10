@@ -54,7 +54,11 @@ public class Diskovi {
 					imeOrg = st.nextToken().trim();
 					tip = st.nextToken().trim();
 					kapacitet=Integer.parseInt(st.nextToken().trim());
-					imeVM = st.nextToken().trim();
+					if(st.hasMoreTokens()) {
+						imeVM = st.nextToken().trim();
+					}else {
+						imeVM="";
+					}
 				}
 				diskovi.put(ime, new Disk(ime,imeOrg,tip,kapacitet,imeVM));
 			}
