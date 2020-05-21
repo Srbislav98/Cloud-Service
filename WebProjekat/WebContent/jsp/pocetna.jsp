@@ -64,6 +64,12 @@
 		</tr>
 		<c:forEach var="v" items="${applicationScope.vme}">
 		<c:if test= "${user.uloga == 'Super admin' || user.organizacija==v.organizacija }">
+			<ul id="${v.ime}" style="display:none;">
+			<c:forEach var="vreme" items="${v.aktivnosti}">
+				<li class="myclass"><c:out value="${vreme.pocetak}" /></li>
+				<li class="myclass"><c:out value="${vreme.kraj}" /></li>
+			</c:forEach>
+			</ul>
 			<tr class="filterDiv">
 				<td class="myclass"><c:out value="${v.ime}" /></td>
 				<td class="myclass"><c:out value="${v.organizacija}" /></td>
@@ -153,24 +159,55 @@
     <legend>Izmena i pregled virtuelne masine</legend>
     <br>
     <label>Ime:<span style="color:red"  id="greskaIzmjenaIme"></span><input id="a" name="ime" type="text" class="fotrol" placeholder="Unesite ime"></label>
-    <label>Organizacija:<input name="" id="b" type="text" class="fotrol" placeholder="Unesite organizaciju"></label>
+    <input id="aaa" name="PravoIme" type="text" required style="display:none;">
+    <label>Organizacija:<input name="" id="b" type="text" class="fotrol" placeholder="Unesite organizaciju" readonly="readonly"></label>
     <label>Kategorija:<span style="color:red"  id="greskaIzmjenaKategorija"></span>
-    	<select id="kategorija" name="kategorija" required onchange="kateg1()">
+    	<select id="kategorij" name="kategorija" required onchange="kateg2()">
     	 <c:forEach var="v" items="${applicationScope.kategorijeVM}">
     		<option value="${v.ime}"><c:out value="${v.ime}" /></option>
     	</c:forEach>
     	</select>
     </label>
-    <label>Broj jezgara:<input name="" id="d" type="number" class="fotrol" placeholder="Unesite broj jezgara" readonly="readonly"></label>
-    <label>Ram:<input name="" id="e" type="number" class="fotrol" placeholder="Unesite ram" readonly="readonly"></label>
-    <label>Gpu:<input name="" id="f" type="number" class="fotrol" placeholder="Unesite gpu" readonly="readonly"></label>
-    <br><br>
+    <table>
+    	<tr>
+    		<th>Broj jezgara:</th>
+    		<th>Ram:</th>
+    		<th>Gpu:</th>
+    	</tr>
+    	<tr>
+    		<td><input name="jezgara" id="b1" type="number" class="fotrol" placeholder="Unesite broj jezgara" readonly="readonly">
+    		</td>
+    		<td><input name="ram" id="b2" type="number" class="fotrol" placeholder="Unesite ram" readonly="readonly">
+    		</td>
+    		<td><input name="gpu" id="b3" type="number" class="fotrol" placeholder="Unesite gpu" readonly="readonly">
+    		</td>
+    	</tr>
+    </table>
+    <label>Diskovi:
+    	<select id="diskoviIzmjena" name="diskovi" multiple="multiple" >
+    	</select>
+    </label>
+    <label>
+    	<select id="aktListaIzmjena" name="aktivnosti" multiple="multiple" required style="display:none;" >
+    	<option value="audi" selected>Audi</option>
+    	</select>
+    </label>
+    <label>Aktivnosti:<span style="color:blue"  id="tipAktivnosti"></span><span style="color:red"  id="greskaAktivnosti"></span></label>
+    <div style="overflow-y:scroll;height:100px;">
+    <table id="aktivnostiIzmjena">
+    <tr>
+    		<th>Pocetak</th>
+		   <th>Kraj</th>
+	</tr>
+    </table>
+    </div>
+    <button type="button" class="btn btn-success" style="width:100%;"  onclick="paliGasi()">Paljenje/gasenje</button>
     <button type="submit" class="btn maal leftbutton">Potvrdi</button>
     </form>
     <button type="button" class="btn zaal rightbutton" onclick="otkaziIzmenu()">Otkazi</button>
     <form name="myForm3" action="http://localhost:8080/WebProjekat/BrisanjeVM"  method="post">
     <input id="aa" name="ime" type="text" class="fotrol" placeholder="Unesite ime" required style="display:none;">
-    <button type="submit" class="btn btn-warning btn-lg izmeni" style="width:100%;"  onclick="obrisi()">Obrisi</button>
+    <button type="submit" class="btn btn-warning" style="width:100%;"  onclick="obrisi()">Obrisi</button>
    	</form>
    </div>
    </div>
@@ -192,6 +229,17 @@ function kateg1(){
 	</c:forEach>
 	
 }
+function kateg2(){
+	xy=document.getElementById("kategorij").value;
+	<c:forEach var="v" items="${applicationScope.kategorijeVM}">
+	  var ime="<c:out value="${v.ime}" />";
+	  if (ime==xy){
+			document.getElementById("b1").value = "<c:out value="${v.jezgara}" />";
+			document.getElementById("b2").value = "<c:out value="${v.ram}" />";
+			document.getElementById("b3").value = "<c:out value="${v.gpu}" />";
+		  }
+	</c:forEach>	
+}
 function provjeriSve(n){
 	if( provjeriIme(n)==false){
 		return false;
@@ -203,7 +251,46 @@ function provjeriSve(n){
 		}else{
 			return true;
 		}
+	}else{
+		if(provjeriIzmjenu()==false){
+			return false;
+		}
 	}
+	return true;
+}
+function provjeriIzmjenu(){
+	var brojac=0,brojac1=0;
+	document.getElementById("greskaAktivnosti").textContent="";
+	var table = document.getElementById("aktivnostiIzmjena");
+	var x = document.getElementById("aktListaIzmjena");
+	x.options[0].selected=false;
+	for (var i = 0, row; row = table.rows[i]; i++) {
+		   for (var j = 0, col; col = row.cells[j]; j++) {
+			   	if(brojac!=0 && brojac!=1){
+			   		if(new Date(table.rows[i].cells[j].childNodes[0].value)>new Date()){
+			   			document.getElementById("greskaAktivnosti").textContent="  Nevalidan unos(kraj>=trenutno).";
+		   				return false;
+			   		}
+			   		brojac1++;
+			   		if(brojac1==2){
+			   			var poc=new Date(table.rows[i].cells[j-1].childNodes[0].value);
+			   			var kra=new Date(table.rows[i].cells[j].childNodes[0].value);
+			   			if(poc>=kra){
+			   				document.getElementById("greskaAktivnosti").textContent="  Nevalidan unos(pocetak>=kraj).";
+			   				return false;
+			   			}	
+			   			brojac1=0;
+			   		}
+			   		var tekst=table.rows[i].cells[j].childNodes[0].value;
+					var option =document.createElement("option");
+					option.text=tekst;
+					option.value=tekst;
+					x.add(option);
+					x.options[brojac-1].selected=true;
+			   	}
+				brojac++;
+		   }  
+		}
 	return true;
 }
 function provjeriIme(n){
@@ -235,18 +322,18 @@ function provjeriIme(n){
 		if(a==ime){
 			br=br+1;
 		}
-		if(trenutnoIme==a){
+		if(trenutnoIme.toLowerCase()==a){
 			brt=1;
 		}
 	</c:forEach>
 	if(n==0 && br==0){
 		return true;
-	}else if(n==1 && br==1 && ime==trenutnoIme){
+	}else if(n==1 && br==1 && ime==trenutnoIme.toLowerCase()){
+		//treba LOWER CASE
 		return true;
 	}else if(n==1 && br==0 && ime!=trenutnoIme && brt==1){
 		return true;
 	}else{
-
 		document.getElementById("greskaIme").textContent=" Vec postoji ovo ime. Promenite ga.";
 		document.getElementById("greskaIzmjenaIme").textContent=" Vec postoji ovo ime. Promenite ga.";
 		return false;
@@ -261,16 +348,135 @@ function otvoriIzmenu(a,b,c,d,e,f,g,h) {
 	//alert(document.getElementById('kategorija').getElementsByTagName('option')[c]);
 	document.getElementById("a").value = a;
 	document.getElementById("aa").value = a;
+	document.getElementById("aaa").value = a;
 	document.getElementById("b").value = b;
-	document.getElementById('kategorija').value=c;
-	document.getElementById("d").value = d;
-	document.getElementById("e").value = e;
-	document.getElementById("f").value = f;
-	alert(g);
-	alert(h);
+	document.getElementById('kategorij').value=c;
+	document.getElementById("b1").value = d;
+	document.getElementById("b2").value = e;
+	document.getElementById("b3").value = f;
+	var x = document.getElementById("diskoviIzmjena");
+	var brojac=0;
+	<c:forEach var="v" items="${applicationScope.diskovi}">
+	 	<c:if test= "${user.uloga == 'Super admin' || user.organizacija==v.organizacija}">
+		 	<c:if test="${empty v.vm }">
+				var option =document.createElement("option");
+				option.text="${v.ime}";
+				option.value="${v.ime}";
+				x.add(option);
+					brojac++;
+			</c:if>
+		</c:if>
+	</c:forEach>
+	var diski=g.substring(1,g.length-1);
+	var diskii=diski.split(",");
+	var diskiiduz=diskii.length;
+	for(i=0;i<diskii.length;i++){
+		var option =document.createElement("option");
+		option.text=diskii[i];
+		option.value=diskii[i];
+		x.add(option);
+		x.options[brojac].selected=true;
+		brojac++;
+	}
+	var ul = document.getElementById(a);
+	var duzinaTabele = document.getElementById("aktivnostiIzmjena").rows.length;
+	for(var i =0; i<(duzinaTabele-1); ++i){
+		document.getElementById("aktivnostiIzmjena").deleteRow(1);
+	}
+	var table = document.getElementById("aktivnostiIzmjena");
+	var items = ul.getElementsByTagName("li");
+	for (var i = 0; i < items.length; ++i) {
+	  var tr = document.createElement('tr');
+	  table.appendChild(tr);
+	  var td = document.createElement('td');
+	  tr.appendChild(td);
+	  var vreme=document.createElement("input");
+	  vreme.type = 'datetime-local';
+	  var tekstic=convertujDatum(items[i].textContent);
+	  //tekstic=tekstic.substring(0,10);
+	  //var txt = document.createTextNode(tekstic);
+	  vreme.value=tekstic;
+	  //alert(tekstic);
+	  td.appendChild(vreme);
+	  document.getElementById("tipAktivnosti").textContent="VM je upaljena.";
+	  if((i+1)<items.length && items[i+1].textContent.trim()!=""){
+		  i++;
+		  var td = document.createElement('td');
+		  tr.appendChild(td);
+		  //alert(items[i].textContent);
+		  var tekstic=convertujDatum(items[i].textContent);
+		  //alert(tekstic);
+		  //tekstic=tekstic.substring(0,10);
+		  //var txt = document.createTextNode(tekstic);
+		  var vreme=document.createElement("input");
+	      vreme.type = 'datetime-local';
+	      vreme.value=tekstic;
+		  td.appendChild(vreme);
+		  document.getElementById("tipAktivnosti").textContent="VM je ugasena.";
+	  }else if(items[i+1].textContent.trim()==""){
+		  i++;
+	  }
+	}
 	document.getElementById("myForm2").style.display = "block";
 	document.getElementById("modaldark").style.display = "block";
 	document.getElementById("modaldark").style.opacity="1";
+}
+function paliGasi(){
+	var table = document.getElementById("aktivnostiIzmjena");
+	var provjera=false;
+	for (var i = 0, row; row = table.rows[i]; i++) {
+		var duzina=document.getElementById('aktivnostiIzmjena').rows[i].cells.length;
+		if(duzina==1){
+			var td = document.createElement('td');
+			table.rows[i].appendChild(td);
+			var vreme=document.createElement("input");
+		    vreme.type = 'datetime-local';
+		    var d = new Date();
+		    var n = d.toISOString();
+		    vreme.value=n.substring(0,n.length-8);
+		    td.appendChild(vreme);
+		    provjera=true;
+		    document.getElementById("tipAktivnosti").textContent="VM je ugasena.";
+		}
+	}
+	if(provjera==false){
+		  var tr = document.createElement('tr');
+		  table.appendChild(tr);
+		  var td = document.createElement('td');
+		  tr.appendChild(td);
+		  var vreme=document.createElement("input");
+	      vreme.type = 'datetime-local';
+	      var d = new Date();
+	      var n = d.toISOString();
+	      vreme.value=n.substring(0,n.length-8);
+		  td.appendChild(vreme);
+		  document.getElementById("tipAktivnosti").textContent="VM je upaljena.";
+	}
+	
+	
+
+	td.appendChild(vreme);
+}
+function convertujDatum(str){
+	  var mnths = {
+		      Jan: "01",
+		      Feb: "02",
+		      Mar: "03",
+		      Apr: "04",
+		      May: "05",
+		      Jun: "06",
+		      Jul: "07",
+		      Aug: "08",
+		      Sep: "09",
+		      Oct: "10",
+		      Nov: "11",
+		      Dec: "12"
+		    },
+		    date = str.split(" ");
+	  var datum= [date[5], mnths[date[1]], date[2]].join("-");
+	  datum=[datum,date[3].substring(0,5)].join("T");
+	  datum=[datum,"00.00"].join(":");
+	  return datum;
 }
 function otkaziDodavanje() {
 	document.getElementById("greskaIme").textContent="";
@@ -281,6 +487,10 @@ function otkaziDodavanje() {
 	document.getElementById("modaldark").style.opacity="0";
 }
 function otkaziIzmenu() {
+	var x = document.getElementById("diskoviIzmjena");
+    while (x.options.length > 0) {                
+        x.remove(0);
+    } 
 	document.getElementById("greskaIme").textContent="";
 	document.getElementById("greskaIzmjenaIme").textContent="";
 	document.getElementById("myForm2").style.display = "none";

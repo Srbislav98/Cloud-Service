@@ -1,8 +1,11 @@
 package servlets;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import beans.Aktivnost;
 import beans.Disk;
 import beans.Diskovi;
 import beans.Organizacija;
@@ -39,75 +43,80 @@ public class IzmjenaVM extends HttpServlet {
 		System.out.println("IZMJENA DISKA");
 		String pime=request.getParameter("PravoIme");
 		String ime=request.getParameter("ime");
-		String organizacija=request.getParameter("organizacija");
-		String tip=request.getParameter("tip");
-		String kapacitet=request.getParameter("kapacitet");
-		String vm=request.getParameter("vm");
-		String linija=ime+";"+organizacija+";"+tip+";"+kapacitet+";"+vm;
-		System.out.println(linija);
-		Collection<Disk> diskovii = (Collection<Disk>) (getServletContext().getAttribute("diskovi"));
-		ArrayList<Disk> diskovi=new ArrayList<Disk>(diskovii);
-		for (Disk k :diskovi) {
-			if (pime.equals(k.getIme())) {
-				k.setIme(ime);
-				k.setKapacitet(Integer.parseInt(kapacitet));
-				k.setOrganizacija(organizacija);
-				k.setTip(tip);
-				k.setVm(vm);
+		//String organizacija=request.getParameter("organizacija");
+		String kategorija=request.getParameter("kategorija");
+		String jezgara=request.getParameter("jezgara");
+		String ram=request.getParameter("ram");
+		String gpu=request.getParameter("gpu");
+		String[] disks= request.getParameterValues("diskovi");
+		String[] akts= request.getParameterValues("aktivnosti");
+		ArrayList<String> diskoviVM=new ArrayList<String>();
+		ArrayList<Aktivnost> aktivnosti=new ArrayList<Aktivnost>();
+		//String linija=ime+";"+organizacija+";"+kategorija+";"+jezgara+";"+ram+";"+gpu+";";	
+		for (String s : disks) {
+			diskoviVM.add(s);
+			System.out.println("D:"+s);
+		}
+		Aktivnost a=new Aktivnost();
+		a.setPocetak(null);
+		for (String ss : akts) {
+			String s=ss.substring(0,10)+" "+ss.substring(11,16);
+			SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			Date date= new Date();
+			try {
+				date = formatter.parse(s);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(a.getPocetak()==null) {
+				a.setPocetak(date);
+			}else {
+				a.setKraj(date);
+				aktivnosti.add(a);
+				a=new Aktivnost();
+				a.setPocetak(null);
+				
+			}
+			System.out.println("A:"+s);
+		}
+		if(a.getPocetak()!=null) {
+			aktivnosti.add(a);
+		}
+		Collection<VM> vmee = (Collection<VM>) (getServletContext().getAttribute("vme"));
+		ArrayList<VM> vme=new ArrayList<VM>(vmee);
+		for(VM vm :vme) {
+			if(pime.equals(vm.getIme())) {
+				vm.setIme(ime);
+				//vm.setOrganizacija(organizacija);
+				vm.setKategorija(kategorija);
+				vm.setGpu(Integer.parseInt(gpu));
+				vm.setJezgara(Integer.parseInt(jezgara));
+				vm.setRam(Integer.parseInt(ram));
+				vm.setDiskovi(diskoviVM);
+				vm.setAktivnosti(aktivnosti);
 			}
 		}
-		javax.servlet.ServletContext ctx=getServletContext();		
+		System.out.println(aktivnosti.size()+" OVO JE VELICINA");
+		Collection<Disk> diskovii = (Collection<Disk>) (getServletContext().getAttribute("diskovi"));
+		ArrayList<Disk> diskovi=new ArrayList<Disk>(diskovii);
+		for(String dVM:diskoviVM) {
+			for (Disk k :diskovi) {
+				if (dVM.equals(k.getIme())) {
+					k.setVm(ime);
+				}
+			}
+		}
+		javax.servlet.ServletContext ctx=getServletContext();
+		
 		Diskovi kvm=new Diskovi();
 		kvm.fajlUpis((((javax.servlet.ServletContext) ctx).getRealPath("")),diskovi);
 		((javax.servlet.ServletContext) ctx).setAttribute("diskovi",diskovi);
 		
-		Collection<VM> vmee = (Collection<VM>) (getServletContext().getAttribute("vme"));
-		ArrayList<VM> vme=new ArrayList<VM>(vmee);
-		//int ispit=0;
-		for(VM a : vme) {
-			int index=-1,i=0,ispit=0;
-			for(String z:a.getDiskovi()) {
-				if(z.equalsIgnoreCase(pime)) {
-					index=i;
-					if(vm.equalsIgnoreCase(a.getIme())){
-						ispit=1;
-						//a.getDiskovi().set(index, ime);
-					}//else {
-						//a.getDiskovi().remove(index);
-					//}
-				}
-				i++;
-			}
-			if(ispit==0 && a.getIme().equalsIgnoreCase(vm)) {
-				a.getDiskovi().add(ime);
-			
-			}else if(ispit==1 && index!=-1) {
-				a.getDiskovi().set(index,ime);
-			}
-			else if(index!=-1) {
-				a.getDiskovi().remove(index);
-			}
-		}
 		VMe vmovi=new VMe();
 		vmovi.fajlUpis((((javax.servlet.ServletContext) ctx).getRealPath("")),vme);
 		((javax.servlet.ServletContext) ctx).setAttribute("vme", vme);
-		
-		Collection<Organizacija> organizacijee = (Collection<Organizacija>) (getServletContext().getAttribute("organizacije"));
-		ArrayList<Organizacija> organizacije=new ArrayList<Organizacija>(organizacijee);
-		for(Organizacija a : organizacije) {
-			int index=0,i=0;
-			for(String z:a.getResursi()) {
-				if(z.toLowerCase().equals(pime.toLowerCase())) {
-					index=i;
-					a.getResursi().set(index, ime);
-				}
-				i++;
-			}
-		}
-		Organizacije orgs=new Organizacije();
-		orgs.fajlUpis((((javax.servlet.ServletContext) ctx).getRealPath("")),organizacije);
-		((javax.servlet.ServletContext) ctx).setAttribute("organizacije",organizacije);
-		
+
 		response.sendRedirect(request.getContextPath() + "/jsp/pocetna.jsp");
 	}
 

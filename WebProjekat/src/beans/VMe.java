@@ -146,13 +146,14 @@ public class VMe {
 					resursi=resursi.substring(0, resursi.length()-1);
 				}
 				ArrayList<Aktivnost> akt=k.getAktivnosti();
+				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 				if(akt!=null) {
 					if(!akt.isEmpty()) {
 						for(Aktivnost i :akt) {
-							aktivnosti=i.getPocetak().toString();
+							aktivnosti+=formatter.format(i.getPocetak());
 							if(i.getKraj()!=null) {
 								aktivnosti+="|";
-								aktivnosti+=i.getKraj().toString();
+								aktivnosti+=formatter.format(i.getKraj());
 							}
 							aktivnosti+="#";
 						}

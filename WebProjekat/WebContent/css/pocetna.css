@@ -66,7 +66,10 @@ body{
 	font-family:"Times New Roman";
 	padding:5px;
 }
-
+#tableA tr,td{
+	width: 50px;
+    font-family: "Times New Roman"
+}
 
 
 .table tr:nth-child(even){
@@ -136,10 +139,12 @@ body{
 }
 
 .form-popup {
-  position: absolute;
-  top: 10%;
-  left:40%;
-  width:20%;
+  /*position: absolute;
+  top: 2%;
+  left:35%;*/
+  width:30%;
+	margin:10px auto;
+	overflow:hidden;
   z-index: 100;
   border:2px solid #ccc;
   padding:10px 5px;
@@ -235,9 +240,13 @@ button:hover
 .form-popup tr,
 .form-popup th{
 	border:none;
+}
+
+.form-popup table{
 	width:100%;
 }
 
 .form-popup ul{
 	list-style:none;
 }
+
