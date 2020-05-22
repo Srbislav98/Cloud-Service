@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import beans.Disk;
 import beans.Diskovi;
@@ -39,8 +40,15 @@ public class IzmjenaOrganizacije extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session=request.getSession();
+		Korisnik user=(Korisnik) session.getAttribute("user");
 		System.out.println("sdsd");
+		
 		String pime=request.getParameter("pime");
+		if(user.getUloga().toLowerCase().equals("korisnik") || (user.getUloga().toLowerCase().equals("admin") && user.getOrganizacija()!=pime)){
+			response.setStatus(403);
+			return;
+		}
 		String ime=request.getParameter("ime");
 		String opis=request.getParameter("opis");
 		String logo1=request.getParameter("logo1");

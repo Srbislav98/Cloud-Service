@@ -9,6 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import beans.Korisnik;
 import beans.Organizacija;
 import beans.Organizacije;
 
@@ -31,6 +34,12 @@ public class DodavanjeOrganizacije extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session=request.getSession();
+		Korisnik user=(Korisnik) session.getAttribute("user");
+		if(user.getUloga().toLowerCase().equals("korisnik") || user.getUloga().toLowerCase().equals("admin")){
+			response.setStatus(403);
+			return;
+		}
 		String ime=request.getParameter("ime");
 		String opis=request.getParameter("opis");
 		String logo1=request.getParameter("logo1");

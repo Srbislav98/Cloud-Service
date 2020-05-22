@@ -6,7 +6,7 @@
 <head>
 <link rel="stylesheet" type="text/css" href="/WebProjekat/css/pocetna.css">
 <meta charset="ISO-8859-1">
-<title>Početna</title>
+<title>Profil</title>
 </head>
 <%
 	response.setHeader("cache-Control","no-cache,no-store,must-revalidate"); 
@@ -20,8 +20,7 @@
 
 
   <div class="header">
-    <h1>WEB 1920</h1>
-    <p class="citat">Dobro dosli na nas web sajt.</p>
+    <h1>Cloud Service Provider</h1>
   </div>
   <div class="navigacija">
   	<c:if test= "${user.uloga != 'Korisnik'}">
@@ -83,7 +82,7 @@
 		   <td class="myclass"><input type="password" id="b" minlength="6" maxlength="10" name="plozinka" style="border:none;background:#fff;" class="form-control"  value="${user.lozinka}" required></td> 
 		</tr>
 		<tr>
-			<td colspan="2" style="text-align:center"><button type="submit" class="btn btn-warning btn-lg izmeni">Izmeni</button></td>
+			<td colspan="2" style="text-align:center"><button type="submit" class="btn izmeni" style="height:auto;">Izmeni</button></td>
 		</tr>	
    </table>
    </form>

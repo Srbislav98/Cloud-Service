@@ -9,11 +9,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import beans.Disk;
 import beans.Diskovi;
 import beans.KategorijaVM;
 import beans.KategorijeVM;
+import beans.Korisnik;
 import beans.Organizacija;
 import beans.Organizacije;
 import beans.VM;
@@ -39,6 +41,12 @@ public class BrisanjeDiska extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		HttpSession session=request.getSession();
+		Korisnik user=(Korisnik) session.getAttribute("user");
+		if(user.getUloga().toLowerCase().equals("korisnik")){
+			response.setStatus(403);
+			return;
+		}
 		System.out.println("BRISANE DISKA");
 		String ime=request.getParameter("ime");
 		Collection<Disk> diskovii = (Collection<Disk>) (getServletContext().getAttribute("diskovi"));

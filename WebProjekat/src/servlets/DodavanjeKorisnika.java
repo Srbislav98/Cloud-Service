@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import beans.Disk;
 import beans.Diskovi;
@@ -39,11 +40,17 @@ public class DodavanjeKorisnika extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("DODAJE KORISNIKA");
+		HttpSession session=request.getSession();
+		Korisnik user=(Korisnik) session.getAttribute("user");
 		String email=request.getParameter("email");
 		String ime=request.getParameter("ime");
 		String prezime=request.getParameter("prezime");
 		String lozinka=request.getParameter("lozinka");
 		String organizacija=request.getParameter("organizacija");
+		if(user.getUloga().toLowerCase().equals("korisnik") || (user.getUloga().toLowerCase().equals("admin") && user.getOrganizacija()!=organizacija)){
+			response.setStatus(403);
+			return;
+		}
 		String tip=request.getParameter("tip");
 		String linija=ime+";"+organizacija+";"+tip+";"+email+";"+prezime;
 		System.out.println(linija);

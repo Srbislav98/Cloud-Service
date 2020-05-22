@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import beans.KategorijaVM;
 import beans.KategorijeVM;
+import beans.Korisnik;
 import beans.VM;
 
 /**
@@ -38,6 +39,12 @@ public class DodavanjeKategorije extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("DODAJE KATEGORIJU");
+		HttpSession session=request.getSession();
+		Korisnik user=(Korisnik) session.getAttribute("user");
+		if(user.getUloga().toLowerCase().equals("korisnik") || user.getUloga().toLowerCase().equals("admin")){
+			response.setStatus(403);
+			return;
+		}
 		String ime=request.getParameter("ime");
 		String jezgara=request.getParameter("jezgara");
 		String ram=request.getParameter("ram");

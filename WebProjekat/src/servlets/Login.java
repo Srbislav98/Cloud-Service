@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.PageContext;
 
 import beans.Disk;
 import beans.Diskovi;
@@ -77,10 +78,15 @@ public class Login extends HttpServlet {
 		if(uname!=null && passwd!=null) {
 			Collection<Korisnik> korisnicii = (Collection<Korisnik>) getServletContext().getAttribute("korisnici");
 			ArrayList<Korisnik> korisnici=new ArrayList<Korisnik>(korisnicii);
+			System.out.println(korisnici.size());
 			Korisnik user=null;
+			System.out.println(uname);
 			for (Korisnik korisnik :korisnici) {
+				System.out.println(korisnik.getEmail());
 				if(korisnik.getEmail().equals(uname)) {
-					user=korisnik;
+					System.out.println(korisnik.getEmail());
+					user=new Korisnik(korisnik.getEmail(),korisnik.getLozinka(),korisnik.getIme(),
+							korisnik.getPrezime(),korisnik.getOrganizacija(),korisnik.getUloga());
 					}
 			}
 				if(user!=null &&(user.getLozinka()).equals(passwd)) {
@@ -88,7 +94,7 @@ public class Login extends HttpServlet {
 					session.setAttribute("user",user);
 					response.sendRedirect(request.getContextPath() + "/jsp/pocetna.jsp");
 				}else {
-					session.setAttribute("errorMessage", "KorisniÄ�ko ime ili Å¡ifra nije ispravna");
+					session.setAttribute("errorMessage", "Korisničko ime ili šifra nije ispravna");
 					response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 				}
 				

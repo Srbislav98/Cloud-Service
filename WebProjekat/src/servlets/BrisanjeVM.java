@@ -9,9 +9,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import beans.Disk;
 import beans.Diskovi;
+import beans.Korisnik;
 import beans.Organizacija;
 import beans.Organizacije;
 import beans.VM;
@@ -37,6 +39,12 @@ public class BrisanjeVM extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("BRISANE vm");
+		HttpSession session=request.getSession();
+		Korisnik user=(Korisnik) session.getAttribute("user");
+		if(user.getUloga().toLowerCase().equals("korisnik")){
+			response.setStatus(403);
+			return;
+		}
 		String ime=request.getParameter("ime");
 		Collection<Disk> diskovii = (Collection<Disk>) (getServletContext().getAttribute("diskovi"));
 		ArrayList<Disk> diskovi=new ArrayList<Disk>(diskovii);

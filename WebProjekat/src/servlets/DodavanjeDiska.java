@@ -9,11 +9,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import beans.Disk;
 import beans.Diskovi;
 import beans.KategorijaVM;
 import beans.KategorijeVM;
+import beans.Korisnik;
 import beans.Organizacija;
 import beans.Organizacije;
 import beans.VM;
@@ -39,8 +41,14 @@ public class DodavanjeDiska extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("DODAJE DISK");
+		HttpSession session=request.getSession();
+		Korisnik user=(Korisnik) session.getAttribute("user");
 		String ime=request.getParameter("ime");
 		String organizacija=request.getParameter("organizacija");
+		if(user.getUloga().toLowerCase().equals("korisnik") || (user.getUloga().toLowerCase().equals("admin") && user.getOrganizacija()!=organizacija)){
+			response.setStatus(403);
+			return;
+		}	
 		String tip=request.getParameter("tip");
 		String kapacitet=request.getParameter("kapacitet");
 		String vm=request.getParameter("vm");

@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import beans.KategorijaVM;
 import beans.KategorijeVM;
@@ -41,6 +42,12 @@ public class IzmjenaProfila extends HttpServlet {
 		System.out.println("IZMJENA KATEGORIJE");
 		String pemail=request.getParameter("pemail");
 		System.out.println(pemail);
+		HttpSession session=request.getSession();
+		Korisnik user=(Korisnik) session.getAttribute("user");
+		if(user.getEmail()!=pemail){
+			response.setStatus(403);
+			return;
+		}
 		String email=request.getParameter("email");
 		String ime=request.getParameter("ime");
 		String prezime=request.getParameter("prezime");

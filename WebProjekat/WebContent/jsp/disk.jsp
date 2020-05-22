@@ -20,8 +20,7 @@
 
 
   <div class="header">
-    <h1>WEB 1920</h1>
-    <p class="citat">Dobro dosli na nas web sajt.</p>
+    <h1>Cloud Service Provider</h1>
   </div>
   <div class="navigacija">
   	<c:if test= "${user.uloga != 'Korisnik'}">
@@ -54,16 +53,26 @@
   	<table class="table">
 		<tr>
 		   <th>Ime</th>
-		   <th>Kapacitet</th>
 		   <th>VM</th>
+		   <th>Kapacitet</th>
 		   <th colspan="1">Uredjivanje</th>
 		</tr>
+		<tr>
+        <td colspan="2">
+          <input type="text" name="" id="pime" placeholder="Unesite ime" />
+        </td>
+        <td>
+          <input class="unosbroja" type="number" id="podkapacitet" placeholder="Od" />
+          <input class="unosbroja" type="number" id="pdokapacitet" placeholder="Do" />
+        </td>
+        <td><input class="btn btn-warning btn-lg izmeni" style="width:105%;" value='Pretrazi' type='button'  onclick="pretrazi()"/></td>
+      </tr>
 		<c:forEach var="v" items="${applicationScope.diskovi}">
 		<c:if test= "${user.uloga == 'Super admin' || user.organizacija==v.organizacija }">
 			<tr class="filterDiv">
 				<td class="myclass"><c:out value="${v.ime}" /></td>
-				<td class="myclass"><c:out value="${v.kapacitet}" /></td>
 				<td class="myclass"><c:out value="${v.vm}" /></td>
+				<td class="myclass"><c:out value="${v.kapacitet}" /></td>
 				<td><input class="btn btn-warning btn-lg izmeni" style="width:105%;" value='Izmena/Pregled' type='button'  onclick="otvoriIzmenu('${v.ime}','${v.tip}','${v.kapacitet}','${v.vm}','${v.organizacija}')"/></td>
 			</tr>
 		</c:if>
@@ -129,7 +138,7 @@
     	<input id="aa" name="ime" type="text" class="fotrol" placeholder="Unesite ime" required style="display:none;">
     	<input name="vm"  id="dd" type="text" class="fotrol" placeholder="Unesite vm" required style="display:none;">
     	<c:if test= "${user.uloga == 'Super admin' || (user.organizacija==v.organizacija && user.uloga=='Admin') }">
-    	<button type="submit" class="btn btn-warning btn-lg izmeni" style="width:100%;"  onclick="obrisi()">Obrisi</button>
+    <button id="obrisi" type="submit" class="btn btn-warning" style="width:100%;"  onclick="obrisi()">Obrisi</button>
    		</c:if>
     </form>
    </div>
@@ -137,6 +146,34 @@
    </div>
 </body>
 <script>
+function pretrazi() {
+    var ime = document.getElementById("pime").value;
+    var odkapacitet = document.getElementById("podkapacitet").value;
+    var dokapacitet = document.getElementById("pdokapacitet").value;
+    var tabela = document.getElementsByClassName("table");
+    var tr = tabela[0].children;
+    tr = tr[0].children;
+    for (var i = 2; i < tr.length; i++) {
+      var td = tr[i].children;
+      for (var j = 0; j < td.length - 1; j++) {
+    	if(j==1)continue;
+        var vrijednost = td[j].textContent.toLowerCase();
+        if (j != 0) vrijednost = Number(vrijednost);
+        if (j == 0 && ime != "" && vrijednost.search(ime) == -1) {
+          tr[i].style.display = "none";
+          break;
+        } else {
+          tr[i].style.display = "table-row";
+        }
+        if (j == 2 && odkapacitet != "" && dokapacitet != "" && ((vrijednost < odkapacitet) ||( vrijednost > dokapacitet))) {
+          tr[i].style.display = "none";
+          break;
+        } else {
+          tr[i].style.display = "table-row";
+        }
+      }
+    }
+  }
 function provjeriSve(n){
 	if(provjeriIme(n)==false){
 		return false;

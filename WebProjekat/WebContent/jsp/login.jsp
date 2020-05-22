@@ -19,7 +19,7 @@
 %>
 <body>
 	<div class="form">
-	<h1>WEB 1920</h1>
+	<h1>Cloud Service Provider</h1>
 	<form action="http://localhost:8080/WebProjekat/Login" method="post">
       <input name="username" type="text" placeholder="Korisničko ime" required="required"/>
       <input name="password" type="password" placeholder="Šifra" required="required"/>

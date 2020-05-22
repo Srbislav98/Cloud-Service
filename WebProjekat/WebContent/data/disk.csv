@@ -1,7 +1,5 @@
 DiskA;Java;SSD;256;Windows8
 DiskB;C;SSD;256;Pro
-DiskX;C;SSD;256;
-DiskY;C;SSD;256;
-DiskC;Linux;SSD;256;Windows8;
-DiskD;Microsoft;HDD;1024;Windows10
+DiskC;Java;SSD;256;Windows8;
+DiskD;Python;HDD;1024;Windows10
 DiskE;Java;HDD;1024;Max

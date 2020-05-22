@@ -14,12 +14,15 @@
 	response.setHeader("Expires","0");
 	if(user.getPrijavljen().equals("ne"))
 		response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
+	if(user.getUloga().toLowerCase().equals("korisnik")){
+		response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
+		//response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+	}
 %>
 <body>
 
   <div class="header">
-    <h1>WEB 1920</h1>
-    <p class="citat">Dobro dosli na nas web sajt.</p>
+    <h1>Cloud Service Provider</h1>
   </div>
   <div class="navigacija">
   	<c:if test= "${user.uloga != 'Korisnik'}">
@@ -82,9 +85,11 @@
 			</tr>
 		</c:if>
 		</c:forEach>
+		<c:if test= "${user.uloga == 'Super admin'}">
 		<tr>
 			<td colspan="4" style="text-align:center"><input class="btn btn-warning btn-lg izmeni" type='button' value='Dodavanje'  onclick="otvoriDodavanje()"/></td>
 		</tr>	
+		</c:if>
    </table>
    <div id="modaldark">
    <div class="form-popup" id="myForm1">
@@ -110,7 +115,7 @@
     <input name="pime" id="aa" type="text" class="fotrol" placeholder="Unesite ime" required style="display:none;">
     <label><textarea name="opis" id="b"  placeholder="Unesite opis"></textarea></label>
     <label><br><input name="logo1" id="c" type="text" class="fotrol" style="margin-bottom:0;width:80%;"  placeholder="Unesite URL logo"><span>&nbsp &nbsp ili</span>
-    <input name="logo2" type="file" value = "onUpload" ></label>
+    <input id="logo2" name="logo2" type="file" value = "onUpload" ></label>
     <br><br>
 	<label>Korisnici:<textarea name="opisOrg" id="d" disabled ></textarea></label>
 	<label>Resursi:<textarea name="opisOrg" id="e"  disabled ></textarea></label>
@@ -124,6 +129,7 @@
 </body>
 <script>
 function provjeriSve(n){
+	//alert(document.getElementById("logo2").files[0]);
 	if(provjeriIme(n)==false){
 		return false;
 	}else{

@@ -9,9 +9,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import beans.KategorijaVM;
 import beans.KategorijeVM;
+import beans.Korisnik;
 
 /**
  * Servlet implementation class BrisanjeKategorije
@@ -33,6 +35,12 @@ public class BrisanjeKategorije extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("BRISANJE KATEGORIJE");
+		HttpSession session=request.getSession();
+		Korisnik user=(Korisnik) session.getAttribute("user");
+		if(user.getUloga().toLowerCase().equals("korisnik") || user.getUloga().toLowerCase().equals("admin")){
+			response.setStatus(403);
+			return;
+		}
 		String ime=request.getParameter("ime");
 		Collection<KategorijaVM> kategorijee = (Collection<KategorijaVM>) (getServletContext().getAttribute("kategorijeVM"));
 		int index=0,i=0;

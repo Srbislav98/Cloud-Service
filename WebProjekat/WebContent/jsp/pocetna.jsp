@@ -16,12 +16,11 @@
 	if(user.getPrijavljen().equals("ne"))
 		response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
 %>
-<body>
+<body onload="provjeri('${user.uloga}')">
 
 
   <div class="header">
-    <h1>WEB 1920</h1>
-    <p class="citat">Dobro dosli na nas web sajt!</p>
+    <h1>Cloud Service Provider</h1>
   </div>
   <div class="navigacija">
   	<c:if test= "${user.uloga != 'Korisnik'}">
@@ -62,6 +61,24 @@
 		  <!--<th>Diskovi</th>
 		   <th colspan="2">Aktivnosti</th>-->
 		</tr>
+		<tr>
+        <td colspan="2">
+          <input type="text" name="" id="pime" placeholder="Unesite ime" />
+        </td>
+        <td>
+          <input class="unosbroja" type="number" id="podjezgra" placeholder="Od" />
+          <input class="unosbroja" type="number" id="pdojezgra" placeholder="Do" />
+        </td>
+        <td>
+          <input class="unosbroja" type="number" id="podram" placeholder="Od" />
+          <input class="unosbroja" type="number" id="pdoram" placeholder="Do" />
+        </td>
+        <td>
+          <input class="unosbroja" type="number" id="podgpu" placeholder="Od" />
+          <input class="unosbroja" type="number" id="pdogpu" placeholder="Do" />
+        </td>
+        <td><input class="btn btn-warning btn-lg izmeni" style="width:105%;" value='Pretrazi' type='button'  onclick="pretrazi()"/></td>
+      </tr>
 		<c:forEach var="v" items="${applicationScope.vme}">
 		<c:if test= "${user.uloga == 'Super admin' || user.organizacija==v.organizacija }">
 			<ul id="${v.ime}" style="display:none;">
@@ -100,7 +117,7 @@
 						</c:forEach>
 					</ul>
 				</td>-->
-				<td><input class="btn btn-warning btn-lg izmeni" style="width:105%;" value='Izmena/Pregled' type='button'  onclick="otvoriIzmenu('${v.ime}','${v.organizacija}','${v.kategorija}','${v.jezgara}','${v.ram}','${v.gpu}','${v.diskovi}','${v.aktivnosti}')"/></td>
+				<td><input class="btn btn-warning btn-lg izmeni" style="width:105%;" value='Izmena/Pregled' type='button'  onclick="otvoriIzmenu('${user.uloga}','${v.ime}','${v.organizacija}','${v.kategorija}','${v.jezgara}','${v.ram}','${v.gpu}','${v.diskovi}','${v.aktivnosti}')"/></td>
 				<c:if test= "${user.uloga == 'Super admin' || (user.organizacija==v.organizacija && user.uloga=='Admin') }">
 
 				</c:if>
@@ -201,19 +218,76 @@
 	</tr>
     </table>
     </div>
-    <button type="button" class="btn btn-success" style="width:100%;"  onclick="paliGasi()">Paljenje/gasenje</button>
-    <button type="submit" class="btn maal leftbutton">Potvrdi</button>
+    <button id="paligasi" type="button" class="btn btn-success" style="width:100%;"  onclick="paliGasi('${user.uloga}')">Paljenje/gasenje</button>
+    <button id="potvrdi" type="submit" class="btn maal leftbutton">Potvrdi</button>
     </form>
-    <button type="button" class="btn zaal rightbutton" onclick="otkaziIzmenu()">Otkazi</button>
+    <button id="otkazisiroki" type="button" class="btn btn-success" onclick="otkaziIzmenu()" style="display:none;width:100%;" >Otkazi</button>
+    <button id="otkaziuski" type="button" class="btn zaal rightbutton" onclick="otkaziIzmenu()">Otkazi</button>
     <form name="myForm3" action="http://localhost:8080/WebProjekat/BrisanjeVM"  method="post">
     <input id="aa" name="ime" type="text" class="fotrol" placeholder="Unesite ime" required style="display:none;">
-    <button type="submit" class="btn btn-warning" style="width:100%;"  onclick="obrisi()">Obrisi</button>
+    <button id="obrisi" type="submit" class="btn btn-warning" style="width:100%;"  onclick="obrisi()">Obrisi</button>
    	</form>
    </div>
    </div>
    </div>
 </body>
 <script>
+function pretrazi() {
+    var ime = document.getElementById("pime").value;
+    var odjezgra = document.getElementById("podjezgra").value;
+    var dojezgra = document.getElementById("pdojezgra").value;
+    var odram = document.getElementById("podram").value;
+    var doram = document.getElementById("pdoram").value;
+    var odgpu = document.getElementById("podgpu").value;
+    var dogpu = document.getElementById("pdogpu").value;
+    var tabela = document.getElementsByClassName("table");
+    var tr = tabela[0].children;
+    tr = tr[0].children;
+    for (var i = 2; i < tr.length; i++) {
+      var td = tr[i].children;
+      for (var j = 0; j < td.length - 1; j++) {
+    	if(j==1)continue;
+        var vrijednost = td[j].textContent.toLowerCase();
+        if (j != 0) vrijednost = Number(vrijednost);
+        if (j == 0 && ime != "" && vrijednost.search(ime) == -1) {
+          tr[i].style.display = "none";
+          break;
+        } else {
+          tr[i].style.display = "table-row";
+        }
+        if (j == 2 && odjezgra != "" && dojezgra != "" && ((vrijednost < odjezgra) ||( vrijednost > dojezgra))) {
+          tr[i].style.display = "none";
+          break;
+        } else {
+          tr[i].style.display = "table-row";
+        }
+        if (j == 3 && odram != "" && doram != "" && ((vrijednost < odram) || (vrijednost > doram))) {
+          tr[i].style.display = "none";
+          break;
+        } else {
+          tr[i].style.display = "table-row";
+        }
+        if (j == 4 && odgpu != "" && dogpu != "" && ((vrijednost < odgpu) || (vrijednost > dogpu))) {
+          tr[i].style.display = "none";
+          break;
+        } else {
+          tr[i].style.display = "table-row";
+        }
+      }
+    }
+  }
+function provjeri(a){
+	if(a=="Korisnik"){
+		document.getElementById("otkazisiroki").style.display="block";
+		document.getElementById("otkaziuski").style.display="none";
+		document.getElementById("paligasi").style.display="none";
+		document.getElementById("obrisi").style.display="none";
+		document.getElementById("potvrdi").style.display="none";
+		document.getElementById("a").setAttribute("readonly","readonly");
+
+	}
+	
+}
 function provjeriBrisanje(){
 	return true;
 }
@@ -344,7 +418,7 @@ function otvoriDodavanje() {
 	document.getElementById("modaldark").style.display = "block";
 	document.getElementById("modaldark").style.opacity="1";
 }
-function otvoriIzmenu(a,b,c,d,e,f,g,h) {
+function otvoriIzmenu(uloga,a,b,c,d,e,f,g,h) {
 	//alert(document.getElementById('kategorija').getElementsByTagName('option')[c]);
 	document.getElementById("a").value = a;
 	document.getElementById("aa").value = a;
@@ -420,8 +494,28 @@ function otvoriIzmenu(a,b,c,d,e,f,g,h) {
 	document.getElementById("myForm2").style.display = "block";
 	document.getElementById("modaldark").style.display = "block";
 	document.getElementById("modaldark").style.opacity="1";
+	if(uloga=="Korisnik"){
+		var ketegorij=document.getElementById("kategorij").children;
+		for(var i=0;i<kategorij.length;i++){
+			kategorij[i].setAttribute("disabled","true");
+		}
+	}
+	if(uloga=="Korisnik"||uloga=="Admin"){
+		var aktivnost=document.getElementById("aktivnostiIzmjena").children;
+		for(var i=0;i<aktivnost.length;i++){
+			if(aktivnost[i].tagName=="TR"){
+				var tr=aktivnost[i].children;
+				for(var j=0;j<tr.length;j++){
+					var inputi=tr[j].children;
+					for(var k=0;k<inputi.length;k++){
+						inputi[k].setAttribute("readonly","readonly");
+					}
+				}
+			}
+		}
+	}
 }
-function paliGasi(){
+function paliGasi(uloga){
 	var table = document.getElementById("aktivnostiIzmjena");
 	var provjera=false;
 	for (var i = 0, row; row = table.rows[i]; i++) {
@@ -437,6 +531,9 @@ function paliGasi(){
 		    td.appendChild(vreme);
 		    provjera=true;
 		    document.getElementById("tipAktivnosti").textContent="VM je ugasena.";
+		    if(uloga=="Admin"){
+		    	vreme.setAttribute("readonly","readonly");
+		    }
 		}
 	}
 	if(provjera==false){
@@ -451,6 +548,9 @@ function paliGasi(){
 	      vreme.value=n.substring(0,n.length-8);
 		  td.appendChild(vreme);
 		  document.getElementById("tipAktivnosti").textContent="VM je upaljena.";
+		  if(uloga=="Admin"){
+		    	vreme.setAttribute("readonly","readonly");		    	
+		  }
 	}
 	
 	

@@ -15,13 +15,16 @@
 	System.out.println(session.getAttribute("user"));
 	if(user.getPrijavljen().equals("ne"))
 		response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
+	if(user.getUloga().toLowerCase().equals("korisnik")){
+		response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
+		//response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+	}
 %>
 <body>
 
 
   <div class="header">
-    <h1>WEB 1920</h1>
-    <p class="citat">Dobro dosli na nas web sajt.</p>
+    <h1>Cloud Service Provider</h1>
   </div>
   <div class="navigacija">
   	<c:if test= "${user.uloga != 'Korisnik'}">
@@ -62,7 +65,7 @@
 		   <th colspan="1">Uredjivanje</th>
 		</tr>
 		<c:forEach var="v" items="${applicationScope.korisnici}">
-		<c:if test= "${user.uloga == 'Super admin' || user.organizacija==v.organizacija }">
+		<c:if test= "${(user.uloga == 'Super admin' || user.organizacija==v.organizacija) && user.email!=v.email }">
 			<tr class="filterDiv">
 				<td class="myclass"><c:out value="${v.email}" /></td>
 				<td class="myclass"><c:out value="${v.ime}" /></td>
@@ -119,12 +122,12 @@
     <label>Organizacija korisnika: <input name="organizacija" id="e" type="text" class="fotrol" placeholder="Unesite organizaciju" readonly="readonly"></label>
     <label>Tip:<span style="color:red" id="greskaIzmjeneTip"></span><input name="tip" id="f" type="text" class="fotrol" placeholder="Unesite tip"></label>
     <br><br><br>
-    <button type="submit" class="btn maal leftbutton">Potvrdi</button>
-    </form>
-    <form name="myForm3" action="http://localhost:8080/WebProjekat/BrisanjeKorisnika" method="post">
-    <button type="button" class="btn zaal rightbutton" onclick="otkaziIzmenu()">Otkazi</button>
-    <input name="email" id="aa" type="text" class="fotrol" placeholder="Unesite email" required style="display:none;">
-    <button type="submit" class="btn btn-warning btn-lg izmeni" style="width:100%;"  onclick="obrisi()">Obrisi</button>
+	    <button type="submit" class="btn maal leftbutton">Potvrdi</button>
+	    </form>
+	    <form name="myForm3" action="http://localhost:8080/WebProjekat/BrisanjeKorisnika" method="post">
+	    <button type="button" class="btn zaal rightbutton" onclick="otkaziIzmenu()">Otkazi</button>
+	    <input name="email" id="aa" type="text" class="fotrol" placeholder="Unesite email" required style="display:none;">
+   		 <button id="obrisi" type="submit" class="btn btn-warning" style="width:100%;"  onclick="obrisi()">Obrisi</button>
    </form>
    </div>
    </div>
@@ -154,8 +157,8 @@ function provjeriPonavljanje(){
 	var ime="";
 	ime = document.forms["myForm1"]["email"].value;
 	ime=ime.trim();
-	if(ime.length>20){
-		document.getElementById("greskaEmail").textContent="Predugacko ime(Max 20 karaktera)";
+	if(ime.length>40){
+		document.getElementById("greskaEmail").textContent="Predugacko ime(Max 40 karaktera)";
 		return false;
 	}
 	if(ime==""){

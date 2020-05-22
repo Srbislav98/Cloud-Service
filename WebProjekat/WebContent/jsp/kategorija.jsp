@@ -15,13 +15,16 @@
 	System.out.println(session.getAttribute("user"));
 	if(user.getPrijavljen().equals("ne"))
 		response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
+	if(user.getUloga().toLowerCase().equals("korisnik") || user.getUloga().toLowerCase().equals("admin")){
+		response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
+		//response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+	}
 %>
 <body>
 
 
   <div class="header">
-    <h1>WEB 1920</h1>
-    <p class="citat">Dobro dosli na nas web sajt.</p>
+    <h1>Cloud Service Provider</h1>
   </div>
   <div class="navigacija">
   	<c:if test= "${user.uloga != 'Korisnik'}">
@@ -101,7 +104,7 @@
     <button type="button" class="btn zaal rightbutton" onclick="otkaziIzmenu()">Otkazi</button>
     <form name="myForm3" action="http://localhost:8080/WebProjekat/BrisanjeKategorije" onsubmit="return provjeriBrisanje()" method="post">
     <input id="aa" name="ime" type="text" class="fotrol" placeholder="Unesite ime" required style="display:none;">
-    <button type="submit" class="btn btn-warning btn-lg izmeni" style="width:100%;"  onclick="obrisi()">Obrisi</button>
+    <button id="obrisi" type="submit" class="btn btn-warning" style="width:100%;"  onclick="obrisi()">Obrisi</button>
    </form>
    </div>
    </div>
