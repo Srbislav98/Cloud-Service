@@ -99,7 +99,7 @@
     <label>Ime:<span style="color:red" id="greskaIme"></span><input name="ime" type="text" class="fotrol" placeholder="Unesite ime" required></label>
     <label>Opis:<textarea name="opis"   placeholder="Unesite opis"></textarea></label>
     <label>Logo:<br><input name="logo1" type="text" class="fotrol" style="margin-bottom:0;width:80%;"  placeholder="Unesite URL logo"><span>&nbsp &nbsp ili</span>
-    <input name="logo2" type="file" value = "onUpload" ></label>
+    <input id="fajl" name="logo2" type="file" value = "onUpload" ></label>
     <br><br><br>
     <button type="submit" class="btn maal leftbutton">Potvrdi</button>
     <button type="button" class="btn zaal rightbutton" onclick="otkaziDodavanje()">Otkazi</button>
@@ -113,8 +113,8 @@
     <br>
   	<label>Ime:<span style="color:red" id="greskaIzmjenaIme"></span><input name="ime" id="a" type="text" class="fotrol" placeholder="Unesite ime" required></label>
     <input name="pime" id="aa" type="text" class="fotrol" placeholder="Unesite ime" required style="display:none;">
-    <label><textarea name="opis" id="b"  placeholder="Unesite opis"></textarea></label>
-    <label><br><input name="logo1" id="c" type="text" class="fotrol" style="margin-bottom:0;width:80%;"  placeholder="Unesite URL logo"><span>&nbsp &nbsp ili</span>
+    <label>Opis:<textarea name="opis" id="b"  placeholder="Unesite opis"></textarea></label>
+    <label>Logo:<br><input name="logo1" id="c" type="text" class="fotrol" style="margin-bottom:0;width:80%;"  placeholder="Unesite URL logo"><span>&nbsp &nbsp ili</span>
     <input id="logo2" name="logo2" type="file" value = "onUpload" ></label>
     <br><br>
 	<label>Korisnici:<textarea name="opisOrg" id="d" disabled ></textarea></label>
@@ -129,6 +129,8 @@
 </body>
 <script>
 function provjeriSve(n){
+	//var file = document.getElementById('fajl').files[0];
+	//alert(file);
 	//alert(document.getElementById("logo2").files[0]);
 	if(provjeriIme(n)==false){
 		return false;

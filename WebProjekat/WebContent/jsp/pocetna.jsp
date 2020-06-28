@@ -593,6 +593,7 @@ function otkaziIzmenu() {
     } 
 	document.getElementById("greskaIme").textContent="";
 	document.getElementById("greskaIzmjenaIme").textContent="";
+	document.getElementById("greskaAktivnosti").textContent="";
 	document.getElementById("myForm2").style.display = "none";
 	document.getElementById("modaldark").style.display = "none";
 	document.getElementById("modaldark").style.opacity="0";

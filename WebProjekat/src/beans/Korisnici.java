@@ -92,6 +92,9 @@ public class Korisnici {
 			System.out.println(file.getCanonicalPath());
 			out = new PrintWriter(new PrintWriter(file));
 			for (Korisnik k : users) {
+				if(k.getUloga().equalsIgnoreCase("super admin")) {
+					k.setOrganizacija(" ");
+				}
 				String linija=k.getEmail()+";"+k.getLozinka()+";"+k.getIme()+";"+k.getPrezime()+";"+k.getOrganizacija()+";"+k.getUloga();
 				out.println(linija);
 				System.out.println(linija);

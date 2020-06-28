@@ -43,15 +43,14 @@ public class IzmjenaOrganizacije extends HttpServlet {
 		HttpSession session=request.getSession();
 		Korisnik user=(Korisnik) session.getAttribute("user");
 		System.out.println("sdsd");
-		
 		String pime=request.getParameter("pime");
-		if(user.getUloga().toLowerCase().equals("korisnik") || (user.getUloga().toLowerCase().equals("admin") && user.getOrganizacija()!=pime)){
+		if(user.getUloga().toLowerCase().equals("korisnik") || (user.getUloga().toLowerCase().equals("admin") && !user.getOrganizacija().equals(pime))){
 			response.setStatus(403);
 			return;
 		}
 		String ime=request.getParameter("ime");
 		String opis=request.getParameter("opis");
-		String logo1=request.getParameter("logo1");
+		String logo1=request.getParameter("logo1"); 
 		String logo2=request.getParameter("logo2");
 		String linija=ime+";"+opis+";"+logo1+";"+logo2;
 		System.out.println(linija);
@@ -61,6 +60,8 @@ public class IzmjenaOrganizacije extends HttpServlet {
 		}else if(!logo1.isEmpty()) {
 			logo=logo1;
 		}
+		user.setOrganizacija(ime);
+		session.setAttribute("user",user);
 		javax.servlet.ServletContext ctx=getServletContext();
 	
 		Collection<Organizacija> organizacijee = (Collection<Organizacija>) (getServletContext().getAttribute("organizacije"));

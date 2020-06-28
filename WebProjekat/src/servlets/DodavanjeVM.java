@@ -43,7 +43,7 @@ public class DodavanjeVM extends HttpServlet {
 		System.out.println("DODAJE DISK");
 		String ime=request.getParameter("ime");
 		String organizacija=request.getParameter("organizacija");
-		if(user.getUloga().toLowerCase().equals("korisnik") || (user.getUloga().toLowerCase().equals("admin") && user.getOrganizacija()!=organizacija)){
+		if(user.getUloga().toLowerCase().equals("korisnik") || (user.getUloga().toLowerCase().equals("admin") && user.getOrganizacija().equals(organizacija))){
 			response.setStatus(403);
 			return;
 		}

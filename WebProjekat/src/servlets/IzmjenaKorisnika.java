@@ -44,7 +44,7 @@ public class IzmjenaKorisnika extends HttpServlet {
 		String prezime=request.getParameter("prezime");
 		String lozinka=request.getParameter("lozinka");
 		String organizacija=request.getParameter("organizacija");
-		if(user.getUloga().toLowerCase().equals("korisnik") || (user.getUloga().toLowerCase().equals("admin") && user.getOrganizacija()!=organizacija)){
+		if(user.getUloga().toLowerCase().equals("korisnik") || (user.getUloga().toLowerCase().equals("admin") && user.getOrganizacija().equals(organizacija))){
 			response.setStatus(403);
 			return;
 		}

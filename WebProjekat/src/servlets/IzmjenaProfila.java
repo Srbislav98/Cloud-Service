@@ -44,7 +44,7 @@ public class IzmjenaProfila extends HttpServlet {
 		System.out.println(pemail);
 		HttpSession session=request.getSession();
 		Korisnik user=(Korisnik) session.getAttribute("user");
-		if(user.getEmail()!=pemail){
+		if(!user.getEmail().toLowerCase().equals(pemail)){
 			response.setStatus(403);
 			return;
 		}
@@ -64,6 +64,7 @@ public class IzmjenaProfila extends HttpServlet {
 				k.setIme(ime);
 				k.setPrezime(prezime);
 				k.setLozinka(lozinka);		
+				session.setAttribute("user",k);
 			}
 		}
 		javax.servlet.ServletContext ctx=getServletContext();

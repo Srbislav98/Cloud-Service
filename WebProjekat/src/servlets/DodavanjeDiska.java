@@ -45,7 +45,7 @@ public class DodavanjeDiska extends HttpServlet {
 		Korisnik user=(Korisnik) session.getAttribute("user");
 		String ime=request.getParameter("ime");
 		String organizacija=request.getParameter("organizacija");
-		if(user.getUloga().toLowerCase().equals("korisnik") || (user.getUloga().toLowerCase().equals("admin") && user.getOrganizacija()!=organizacija)){
+		if(user.getUloga().toLowerCase().equals("korisnik") || (user.getUloga().toLowerCase().equals("admin") && user.getOrganizacija().equals(organizacija))){
 			response.setStatus(403);
 			return;
 		}	

@@ -46,7 +46,7 @@ public class VMe {
 		ArrayList<String> diskovi=new ArrayList<String>();
 		ArrayList<Aktivnost> aktivnosti= new ArrayList<Aktivnost>();
 		//Aktivnost aktivnost=new Aktivnost();
-		SimpleDateFormat formatter=new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		SimpleDateFormat formatter=new SimpleDateFormat("dd-MM-yyyy HH:mm");
 		StringTokenizer st,st1,st2;
 		try {
 			while ((line = in.readLine()) != null) {
@@ -146,7 +146,7 @@ public class VMe {
 					resursi=resursi.substring(0, resursi.length()-1);
 				}
 				ArrayList<Aktivnost> akt=k.getAktivnosti();
-				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 				if(akt!=null) {
 					if(!akt.isEmpty()) {
 						for(Aktivnost i :akt) {
@@ -162,6 +162,7 @@ public class VMe {
 				}else {
 					aktivnosti="";
 				}
+				System.out.println("OVO SU GUESS WHO S BACK "+ aktivnosti);
 				String linija=k.getIme()+";"+k.getOrganizacija()+";"+k.getKategorija()+";"+k.getJezgara()+";"+k.getRam()+";"+k.getGpu()+";"+resursi+";"+aktivnosti;
 				out.println(linija);
 				System.out.println(linija);

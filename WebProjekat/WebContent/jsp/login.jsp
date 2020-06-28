@@ -24,7 +24,8 @@
       <input name="username" type="text" placeholder="Korisničko ime" required="required"/>
       <input name="password" type="password" placeholder="Šifra" required="required"/>
       	<p><%if(null!=session.getAttribute("errorMessage")){
-	        out.println(session.getAttribute("errorMessage"));}
+	        out.println(session.getAttribute("errorMessage"));
+	        session.setAttribute("errorMessage", "");}
 		%></p>
       <button>Prijavite se</button>
 	</form>
