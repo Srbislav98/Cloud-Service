@@ -48,7 +48,7 @@
  	</form>
  	</c:if>
     <form action="http://localhost:8080/WebProjekat/Logout" class="odjava" >
- 		<input type="submit" value="Logout">
+ 		<input type="submit" value="Odjavite se">
  	</form>
   </div>
   <div class="tablediv">
